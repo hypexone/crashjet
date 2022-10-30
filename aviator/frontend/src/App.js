@@ -19,7 +19,7 @@ import Auto from './components/auto/Auto';
 
 
 
-// const socket = io.connect("http://localhost:5000");
+const socket = io.connect("http://localhost:5000");
 
 function App() {
   const showRules = useSelector((state) => state.rule.showRules);
