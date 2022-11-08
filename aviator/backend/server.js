@@ -159,8 +159,8 @@ function StartGame() {
     io.emit('Wait', wait);
 
     let interval = setInterval(() => {
-        let inc;
-        if(result)
+        // let inc;
+        // if(result)
         res = res + 0.01;
         let m = res.toFixed(2);
 
@@ -169,20 +169,20 @@ function StartGame() {
             clearInterval(interval);
 
             io.emit("Crash", "Crashed!");
-            io.emit('finalResult', m);
+            // io.emit('finalResult', m);
             io.emit('Result', m);
             updateCrashedAt(rId, m);
             SaveResultInDB(m);
             check = true;
 
         } else {
-            if (m > 1.17) {
+            if (m >= 1.15) {
                 io.emit("Greater", "greater");
             }
             io.emit('Result', m);
         }
 
-    }, 50);
+    }, 100);
 
     interval;
 }

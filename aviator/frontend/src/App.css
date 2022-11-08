@@ -697,6 +697,10 @@
   }
 }
 
+.animation {
+  border-radius: 0 0 30px 30px;
+
+}
 
 .App-display {
   background-color: #181818;
@@ -721,7 +725,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: 95%;
 }
 
 .instruction2 {
@@ -780,6 +784,7 @@
 }
 
 .dynamic-text1 {
+  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -808,12 +813,11 @@
 
 .dynamic-text2 {
   display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+ 
 }
 
 .dynamic-text22 {
+  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;
