@@ -9,6 +9,9 @@ const RoundData = require('./models/roundData');
 const userRoutes = require('./routes/action');
 const bodyParser = require('body-parser');
 
+const produce = require("./producer")
+
+
 const io = require('socket.io')(server, {
     cors: {
         origin: "*",
@@ -25,9 +28,10 @@ app.use('/', userRoutes);
 app.get("/", (req, res) => res.send('HEllo from  new express'));
 app.all("*", (req, res) => res.send("This doesn't exist!"));
 
+let uri = "mongodb://amit:amit@cluster0-shard-00-00.ia7yq.mongodb.net:27017,cluster0-shard-00-01.ia7yq.mongodb.net:27017,cluster0-shard-00-02.ia7yq.mongodb.net:27017/CrashJet?ssl=true&replicaSet=atlas-lhr6uq-shard-0&authSource=admin&retryWrites=true&w=majority"
 
 
-mongoose.connect(process.env.MONGODB_URL, {
+mongoose.connect( uri , {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => {
@@ -37,7 +41,7 @@ mongoose.connect(process.env.MONGODB_URL, {
 
 let check = true;
 let wait = true;
-let rId;
+let rId, roundStat, betStat, crashresult="";
 
 
 //Generate random number between 100 to 5000
@@ -51,19 +55,29 @@ function GetRandomInteger(min, max,) {
 //create new Round
 async function CreateNewRound() {
     let date = new Date();
-    let roundid = date.getDate().toString()+ (date.getMonth()+ 1).toString() + date.getFullYear().toString() + "-" + date.getHours().toString()+date.getMinutes().toString()+date.getSeconds().toString();
+    let roundid = "CRASHJET101" + date.getDate().toString() + (date.getMonth() + 1).toString() + date.getFullYear().toString() + "-" + date.getHours().toString() + date.getMinutes().toString() + date.getSeconds().toString();
     rId = roundid;
+    roundStat = "ROUND_START";
+    betStat = "FALSE";
+    crashresult="";
 
     io.emit('RoundID', roundid);
 
-    console.log(roundid + "--------------------------");
+    const event = { gameId: "CRASHJET101", gameName: "CrashJet", tableId: "CRASHJET101", tableName: "CRASHJET101", roundID: rId, roundStatus: roundStat, betStatus: betStat, outcome: crashresult};
+
+    // call the `produce` function and log an error if it occurs
+    produce(event).catch((err) => {
+        console.error("error in producer: ", err)
+    });
+
+    console.log("roundid : " + roundid);
     const roundData = await RoundData({
-        roundId :  roundid ,
+        roundId: roundid,
         totalBets: 0,
         crashedAt: "-",
 
     });
-    
+
     roundData.save().then(() => {
         // console.log(roundData);
     }).catch(err => console.log(err));
@@ -71,25 +85,25 @@ async function CreateNewRound() {
 
 
 async function updateCrashedAt(rid, crashTime) {
-    
-    const update = await RoundData.updateOne({roundId: rid},
+
+    const update = await RoundData.updateOne({ roundId: rid },
         {
-            $set : {
-                crashedAt : crashTime,
+            $set: {
+                crashedAt: crashTime,
             }
         })
 }
 
 async function updateTotalBets(rid) {
-    const update = await RoundData.findOne({roundId: rid})
-try{
-    let pet = update;
-    // console.log(pet.betsDetails.length);
-    io.emit('Total', pet.betsDetails.length);
-}catch(err){
+    const update = await RoundData.findOne({ roundId: rid })
+    try {
+        let pet = update;
+        // console.log(pet.betsDetails.length);
+        io.emit('Total', pet.betsDetails.length);
+    } catch (err) {
 
-}
-    
+    }
+
 }
 
 
@@ -134,25 +148,25 @@ async function SaveResultInDB(pResult) {
 
 //  on game start
 function StartGame() {
-    const probability = GetRandomInteger(100, 1000);
-    let result;
-    if(probability <= 5){ 
-        // 50% chance to crash below 1.3x
-        result= GetRandomInteger(100, 130);
-    }else if (probability > 5 && probability <= 7){ 
-        // 20% chance to crash b/w 1.3x and 2x
-        result= GetRandomInteger(130, 200);
-    }else if (probability > 7 && probability <= 8.5){ 
-        // 15% chance to crash b/w 2x and 3x
-        result= GetRandomInteger(200, 300);
-    }else if (probability > 8.5 && probability <= 9.5){ 
-        // 10% chance to crash b/w 3x and 5x
-        result= GetRandomInteger(300, 500);
-    }else{
-        // 5% chance to crash b/w 5x and 100x
-        result= GetRandomInteger(500, 10000);
-    }
-    
+
+    let result = GetRandomInteger(100, 130);
+    crashresult = result.toString();
+
+    roundStat = "NO_MORE_BETS";
+    betStat = "FALSE";
+
+    const event = { gameId: "CRASHJET101", gameName: "CrashJet", tableId: "CRASHJET101", tableName: "CRASHJET101", roundID: rId, roundStatus: roundStat, betStatus: betStat, outcome: crashresult};
+
+    // call the `produce` function and log an error if it occurs
+    produce(event).catch((err) => {
+        console.error("error in producer: ", err)
+    });
+
+    // // start the consumer, and log any errors
+    // consume().catch((err) => {
+    //     console.error("error in consumer: ", err)
+    // })
+
     let res = 1;
 
     wait = false; //TODO  emit wait=false
@@ -167,8 +181,18 @@ function StartGame() {
 
         if (m >= result.toFixed(2)) {
             clearInterval(interval);
+            roundStat = "ROUND_END";
+            betStat = "FALSE";
+        
+            const event = { gameId: "CRASHJET101", gameName: "CrashJet", tableId: "CRASHJET101", tableName: "CRASHJET101", roundID: rId, roundStatus: roundStat, betStatus: betStat, outcome: crashresult};
+        
+            // call the `produce` function and log an error if it occurs
+            produce(event).catch((err) => {
+                console.error("error in producer: ", err)
+            });
 
             io.emit("Crash", "Crashed!");
+            console.log("plane crashed");
             // io.emit('finalResult', m);
             io.emit('Result', m);
             updateCrashedAt(rId, m);
@@ -176,9 +200,6 @@ function StartGame() {
             check = true;
 
         } else {
-            if (m >= 1.15) {
-                io.emit("Greater", "greater");
-            }
             io.emit('Result', m);
         }
 
@@ -192,29 +213,42 @@ function WaitingForNextRound() {
     wait = true;  //TODO  emit wait=true
     io.emit("Wait", wait);
 
+   
+    roundStat = "ROUND_START";
+    betStat = "TRUE";
+    crashresult="";
+
+    const event = { gameId: "CRASHJET101", gameName: "CrashJet", tableId: "CRASHJET101", tableName: "CRASHJET101", roundID: rId, roundStatus: roundStat, betStatus: betStat, outcome: crashresult};
+
+    // call the `produce` function and log an error if it occurs
+    produce(event).catch((err) => {
+        console.error("error in producer: ", err)
+    });
+
     setTimeout(() => {
         StartGame();
     }, 10000);
 }
 
+
+
+setInterval(() => {
+    updateTotalBets(rId);
+
+    if (check) {
+        check = false;
+
+        CreateNewRound();
+
+        setTimeout(() => {
+            WaitingForNextRound();
+        }, 2000);
+    }
+
+}, 1000);
+
 io.on("connection", (socket) => {
     console.log("socket is active to be connected");
-
-    setInterval(() => {
-        updateTotalBets(rId);
-
-        if (check) {
-            check = false;
-
-            CreateNewRound();
-
-            setTimeout(() => {
-                WaitingForNextRound();
-            }, 2000);
-        }
-
-    }, 1000);
-
 
 });
 
