@@ -28,8 +28,7 @@ app.use('/', userRoutes);
 app.get("/", (req, res) => res.send('HEllo from  new express'));
 app.all("*", (req, res) => res.send("This doesn't exist!"));
 
-let uri = "mongodb://amit:amit@cluster0-shard-00-00.ia7yq.mongodb.net:27017,cluster0-shard-00-01.ia7yq.mongodb.net:27017,cluster0-shard-00-02.ia7yq.mongodb.net:27017/CrashJet?ssl=true&replicaSet=atlas-lhr6uq-shard-0&authSource=admin&retryWrites=true&w=majority"
-
+let uri = process.env.MONGODB_URL;
 
 mongoose.connect( uri , {
     useNewUrlParser: true,
@@ -41,7 +40,7 @@ mongoose.connect( uri , {
 
 let check = true;
 let wait = true;
-let rId, roundStat, betStat, crashresult="";
+let rId, roundStat, betStat, crashresult="", GameID = process.env.GAMEID, TableID = process.env.TABLEID, GameName =process.env.GAMENAME, TableName = process.env.TABLENAME;
 
 
 //Generate random number between 100 to 5000
@@ -63,7 +62,7 @@ async function CreateNewRound() {
 
     io.emit('RoundID', roundid);
 
-    const event = { gameId: "CRASHJET101", gameName: "CrashJet", tableId: "CRASHJET101", tableName: "CRASHJET101", roundID: rId, roundStatus: roundStat, betStatus: betStat, outcome: crashresult};
+    const event = { gameId: GameID, gameName: GameName, tableId: TableID, tableName: TableName, roundID: rId, roundStatus: roundStat, betStatus: betStat, outcome: crashresult};
 
     // call the `produce` function and log an error if it occurs
     produce(event).catch((err) => {

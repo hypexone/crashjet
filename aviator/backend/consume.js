@@ -4,8 +4,10 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 const clientId = "backend"
-const brokers = ["localhost:9092"] 
-const topic = "message-log"
+const broker1 = process.env.BROKER;
+
+const brokers = [broker1] 
+const topic = process.env.TOPIC
 
 // initialize a new kafka client and initialize a producer from it
 const kafka = new Kafka({ clientId, brokers })
