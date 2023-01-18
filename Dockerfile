@@ -9,6 +9,7 @@ WORKDIR /usr/src/app
 COPY . .
 
 RUN npm install
+RUN npm init -y
 # If you are building your code for production
 # RUN npm ci --only=production
 
