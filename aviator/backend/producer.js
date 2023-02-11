@@ -17,6 +17,7 @@ const producer = kafka.producer()
 const produce = async (event) => {
 	await producer.connect()
 	
+
     
 	// after the produce has connected, we start an interval timer
 	
@@ -27,8 +28,7 @@ const produce = async (event) => {
 				topic,
 				messages: [
 					{
-						
-						value: type.toBuffer(event),
+						value: JSON.stringify(event),
 					},
 				],
 			})

@@ -24,7 +24,9 @@ const consume = async () => {
 		// this function is called every time the consumer gets a new message
 		eachMessage: ({ message }) => {
 			// here, we just log the message to the standard output
-			console.log(`received message: ${type.fromBuffer(message.value)}`)
+			// console.log(`received message: ${type.fromBuffer(message.value)}`)
+			const value = JSON.parse(message.value.toString());
+      		console.log("Received message:", value);
 		},
 	})
 }

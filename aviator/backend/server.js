@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+require('dotenv').config();
 const cors = require('cors');
 const GameData = require('./models/gameData');
 const RoundData = require('./models/roundData');
@@ -18,8 +18,7 @@ const io = require('socket.io')(server, {
     }
 });
 
-dotenv.config();
-let port = process.env.PORT || 5000;
+let port = process.env.PORT ;
 
 app.use(bodyParser.json());
 
@@ -28,9 +27,9 @@ app.use('/', userRoutes);
 app.get("/", (req, res) => res.send('HEllo from  new express'));
 app.all("*", (req, res) => res.send("This doesn't exist!"));
 
-let uri = process.env.MONGODB_URL;
 
-mongoose.connect( uri , {
+
+mongoose.connect( process.env.MONGODB_URL , {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => {
@@ -252,5 +251,5 @@ io.on("connection", (socket) => {
 });
 
 server.listen(port, () => {
-    console.log("server is listening to port 5000...");
+    console.log("server is listening to port ...", port);
 });
