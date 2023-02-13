@@ -172,7 +172,6 @@
             "HTTP_Passwd": "OPENSEARCH_PASSWD",
             "HTTP_User": "OPENSEARCH_USER",
             "Host": "OPENSEARCH_HOST",
-            "Pipeline": "log-convertor",
             "Index": "OPENSEARCH_Prefix",
             "Buffer_Size": "False",
             "Name": "opensearch",
@@ -181,7 +180,8 @@
             "tls": "On",
             "tls.verify": "Off",
             "Logstash_Prefix": "OPENSEARCH_Prefix",
-            "Logstash_Format": "On"
+            "Logstash_Format": "On",
+            "Suppress_Type_Name": "On"
           },
           "secretOptions": []
         },
