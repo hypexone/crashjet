@@ -108,6 +108,7 @@ phases:
       - docker tag crashjet-dev:latest $IMAGE_URL
       - docker push $IMAGE_URL
       - echo "$IMAGE_URL"
+      - cat task-definition1.json
       - aws ecs register-task-definition --family $TASK_DEFINITION_NAME --region $AWS_DEFAULT_REGION --cli-input-json file:///$CODEBUILD_SRC_DIR/crashjet/aviator/backend/ecs/task-definition1.json
       - TASK_REVISION=$(aws ecs describe-task-definition --task-definition $TASK_DEFINITION_NAME --region eu-west-2 | jq '.taskDefinition.revision')
       - echo $TASK_REVISION
