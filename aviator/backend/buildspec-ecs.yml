@@ -44,10 +44,10 @@ phases:
     commands:
       - IMAGE_URL="$REPOSITORY_URI"
       
-      - sed -i 's@CONTAINER_IMAGE@'"$REPOSITORY_URI"'@' crashjet/aviator/backend/ecs/task-definition.json
+      - sed -i 's@CONTAINER_IMAGE@'"$REPOSITORY_URI"'@' aviator/backend/ecs/task-definition.json
       # - sed -i 's@TASK_DEFINITION_NAME@'"$TASK_DEFINITION_NAME"'@' crashjet/aviator/backend/ecs/task-definition.json
       # - sed -i 's@AWSACCOUNT_ID@'"$AWSACCOUNT_ID"'@' crashjet/aviator/backend/ecs/task-definition.json
-      - envsubst < ecs/task-definition.json > crashjet/aviator/backend/ecs/task-definition1.json
+      - envsubst < ecs/task-definition.json > aviator/backend/ecs/task-definition1.json
       # - sed -i 's@BACCARAT_URL_VAL@'"$BACCARAT_URL"'@' crashjet/aviator/backend/ecs/task-definition.json
       # - sed -i 's@CASINO_HOLDEM_URL_VAL@'"$CASINO_HOLDEM_URL"'@' crashjet/aviator/backend/ecs/task-definition.json
       # - sed -i 's@DB_CLUSTER_VAL@'"$DB_CLUSTER"'@' crashjet/aviator/backend/ecs/task-definition.json
@@ -87,13 +87,13 @@ phases:
       # - sed -i 's@OPENSEARCH_USER@'"$OPENSEARCH_USER"'@' crashjet/aviator/backend/ecs/task-definition.json
       # - sed -i 's@OPENSEARCH_HOST@'"$OPENSEARCH_HOST"'@' crashjet/aviator/backend/ecs/task-definition.json
       # - sed -i 's@OPENSEARCH_Prefix@'"$OPENSEARCH_Prefix"'@' crashjet/aviator/backend/ecs/task-definition.json
-        - sed -i 's@DB_CONNECTION_URL@'"$DB_CONNECTION_URL"'@' crashjet/aviator/backend/.env
-        - sed -i 's@GAME_EVENTS_TOPIC@'"$GAME_EVENTS_TOPIC"'@' crashjet/aviator/backend/.env
-        - sed -i 's@KAFKA_BROKERS@'"$KAFKA_BROKERS"'@' crashjet/aviator/backend/.env
-        - sed -i 's@GAMEID_VAL@'"$GAME_ID"'@' crashjet/aviator/backend/.env
-        - sed -i 's@GAMENAME_VAL@'"$GAMENAME"'@' crashjet/aviator/backend/.env
-        - sed -i 's@TABLEID_VAL@'"$TABLE_ID"'@' crashjet/aviator/backend/.env
-        - sed -i 's@TABLENAME_VAL@'"$TABLENAME"'@' crashjet/aviator/backend/.env
+        - sed -i 's@DB_CONNECTION_URL@'"$DB_CONNECTION_URL"'@' aviator/backend/.env
+        - sed -i 's@GAME_EVENTS_TOPIC@'"$GAME_EVENTS_TOPIC"'@' aviator/backend/.env
+        - sed -i 's@KAFKA_BROKERS@'"$KAFKA_BROKERS"'@' aviator/backend/.env
+        - sed -i 's@GAMEID_VAL@'"$GAME_ID"'@' aviator/backend/.env
+        - sed -i 's@GAMENAME_VAL@'"$GAMENAME"'@' aviator/backend/.env
+        - sed -i 's@TABLEID_VAL@'"$TABLE_ID"'@' aviator/backend/.env
+        - sed -i 's@TABLENAME_VAL@'"$TABLENAME"'@' aviator/backend/.env
   
   build:
     commands:
@@ -104,12 +104,12 @@ phases:
       - aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin $AWSACCOUNT_ID.dkr.ecr.eu-west-2.amazonaws.com
       - echo "Build started on `date`"
       - echo "Building the Docker image..."
-      - docker build -t crashjet-dev -f crashjet/aviator/backend/Dockerfile .
+      - docker build -t crashjet-dev -f aviator/backend/Dockerfile .
       - docker tag crashjet-dev:latest $IMAGE_URL
       - docker push $IMAGE_URL
       - echo "$IMAGE_URL"
       - cat task-definition1.json
-      - aws ecs register-task-definition --family $TASK_DEFINITION_NAME --region $AWS_DEFAULT_REGION --cli-input-json file:///$CODEBUILD_SRC_DIR/crashjet/aviator/backend/ecs/task-definition1.json
+      - aws ecs register-task-definition --family $TASK_DEFINITION_NAME --region $AWS_DEFAULT_REGION --cli-input-json file:///$CODEBUILD_SRC_DIR/aviator/backend/ecs/task-definition1.json
       - TASK_REVISION=$(aws ecs describe-task-definition --task-definition $TASK_DEFINITION_NAME --region eu-west-2 | jq '.taskDefinition.revision')
       - echo $TASK_REVISION
       # - aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --region $AWS_DEFAULT_REGION --task-definition "$TASK_DEFINITION_NAME:${TASK_REVISION}"
