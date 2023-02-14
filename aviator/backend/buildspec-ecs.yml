@@ -1,0 +1,114 @@
+version: 0.2
+env:
+  parameter-store:
+    BACCARAT_URL: 'BACCARAT_URL_$ENV'
+    CASINO_HOLDEM_URL: 'CASINO_HOLDEM_URL_$ENV'
+    DB_CLUSTER: 'DB_CLUSTER_$ENV'
+    DB_CLUSTER_NAME: 'DB_CLUSTER_NAME_$ENV'
+    DB_CONNECTION_URL: 'DB_CONNECTION_URL_$ENV'
+    DB_DATABASE: 'DB_DATABASE_$ENV'
+    MAINTENANCE_URL: 'MAINTENANCE_URL_$ENV'
+    GAMES_COPY_URL: 'GAMES_COPY_URL_$ENV'
+    GAME_DISABLED_URL: 'GAME_DISABLED_URL_$ENV'
+    ENV_URL: 'ENV_URL_$ENV'
+    HYPEX_SALT: 'HYPEX_SALT_$ENV'
+    KAFKA_BROKERS: 'KAFKA_BROKERS_$ENV'
+    MUFLISTEENPATTI_URL: 'MUFLISTEENPATTI_URL_$ENV'
+    REDIS_ADDRESS: 'REDIS_ADDRESS_$ENV'
+    REDIS_DB: 'REDIS_DB_$ENV'
+    REDIS_HOST: 'REDIS_HOST_$ENV'
+    REDIS_MAX_RETRIES: 'REDIS_MAX_RETRIES_$ENV'
+    REDIS_PORT: 'REDIS_PORT_$ENV'
+    REDIS_READER: 'REDIS_READER_$ENV'
+    SETTLEMENT_URI: 'SETTLEMENT_URI_$ENV'
+    TEENPATTI_URL: 'TEENPATTI_URL_$ENV'
+    TEST_BASE_URL: 'TEST_BASE_URL_$ENV'
+    TEST_GAME_LAUNCH_URL: 'TEST_GAME_LAUNCH_URL_$ENV'
+    TEST_LOBBY_URL: 'TEST_LOBBY_URL_$ENV'
+    TEST_OPERATOR: 'TEST_OPERATOR_$ENV'
+    TEST_OPERATOR_BASE_URL: 'TEST_OPERATOR_BASE_URL_$ENV'
+    TEST_OPERATOR_LOBBY_URL: 'TEST_OPERATOR_LOBBY_URL_$ENV'
+    TEST_TOKEN: 'TEST_TOKEN_$ENV'
+    VIDEO_URL: 'VIDEO_URL_$ENV'
+    WEBSOCKET_URL: 'WEBSOCKET_URL_$ENV'
+    GAME_ID: 'GAME_ID_$ENV'
+    TABLE_ID: 'TABLE_ID_$ENV'
+    RTP_BASE_URL: 'RTP_BASE_URL_$ENV'
+    TWOCARDTEENPATTI_URL: 'TWOCARDTEENPATTI_URL_$ENV'
+ 
+phases:
+  install:
+    commands:
+      - echo "Install Phase - Nothing to do using latest Amazon Linux Docker Image for CodeBuild which has all AWS Tools - https://github.com/aws/aws-codebuild-docker-images/blob/master/al2/x86_64/standard/3.0/Dockerfile"
+  pre_build:
+    commands:
+      - IMAGE_URL="$REPOSITORY_URI"
+      
+      - sed -i 's@CONTAINER_IMAGE@'"$REPOSITORY_URI"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@TASK_DEFINITION_NAME@'"$TASK_DEFINITION_NAME"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@AWSACCOUNT_ID@'"$AWSACCOUNT_ID"'@' aviator/backend/ecs/task-definition.json
+      # - envsubst < ecs/task-definition.json > aviator/backend/ecs/task-definition1.json
+      - sed -i 's@BACCARAT_URL_VAL@'"$BACCARAT_URL"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@CASINO_HOLDEM_URL_VAL@'"$CASINO_HOLDEM_URL"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@DB_CLUSTER_VAL@'"$DB_CLUSTER"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@DB_CLUSTER_NAME_VAL@'"$DB_CLUSTER_NAME"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@DB_CONNECTION_URL_VAL@'"$DB_CONNECTION_URL"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@DB_DATABASE_VAL@'"$DB_DATABASE"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@MAINTENANCE_URL_VAL@'"$MAINTENANCE_URL"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@GAMES_COPY_URL_VAL@'"$GAMES_COPY_URL"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@GAME_DISABLED_URL_VAL@'"$GAME_DISABLED_URL"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@ENV_URL_VAL@'"$ENV_URL"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@HYPEX_SALT_VAL@'"$HYPEX_SALT"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@KAFKA_BROKERS_VAL@'"$KAFKA_BROKERS"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@MUFLISTEENPATTI_URL_VAL@'"$MUFLISTEENPATTI_URL"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@REDIS_ADDRESS_VAL@'"$REDIS_ADDRESS"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@REDIS_DB_VAL@'"$REDIS_DB"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@REDIS_HOST_VAL@'"$REDIS_HOST"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@REDIS_MAX_RETRIES_VAL@'"$REDIS_MAX_RETRIES"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@REDIS_PORT_VAL@'"$REDIS_PORT"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@REDIS_READER_VAL@'"$REDIS_READER"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@SETTLEMENT_URI_VAL@'"$SETTLEMENT_URI"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@TEENPATTI_URL_VAL@'"$TEENPATTI_URL"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@TEST_BASE_URL_VAL@'"$TEST_BASE_URL"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@TEST_GAME_LAUNCH_URL_VAL@'"$TEST_GAME_LAUNCH_URL"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@TEST_LOBBY_URL_VAL@'"$TEST_LOBBY_URL"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@TEST_OPERATOR_VAL@'"$TEST_OPERATOR"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@TEST_OPERATOR_BASE_URL_VAL@'"$TEST_OPERATOR_BASE_URL"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@TEST_OPERATOR_LOBBY_URL_VAL@'"$TEST_OPERATOR_LOBBY_URL"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@TEST_TOKEN_VAL@'"$TEST_TOKEN"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@VIDEO_URL_VAL@'"$VIDEO_URL"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@WEBSOCKET_URL_VAL@'"$WEBSOCKET_URL"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@GAME_ID_VAL@'"$GAME_ID"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@TABLE_ID_VAL@'"$TABLE_ID"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@RTP_BASE_URL_VAL@'"$RTP_BASE_URL"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@TWOCARDTEENPATTI_VAL@'"$TWOCARDTEENPATTI_URL"'@' aviator/backend/ecs/task-definition.json
+
+      - sed -i 's@OPENSEARCH_PASSWD@'"$OPENSEARCH_PASSWD"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@OPENSEARCH_USER@'"$OPENSEARCH_USER"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@OPENSEARCH_HOST@'"$OPENSEARCH_HOST"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@OPENSEARCH_Prefix@'"$OPENSEARCH_Prefix"'@' aviator/backend/ecs/task-definition.json
+      - sed -i 's@DB_CONNECTION_URL@'"$DB_CONNECTION_URL"'@' aviator/backend/.env
+      - sed -i 's@GAME_EVENTS_TOPIC@'"$GAME_EVENTS_TOPIC"'@' aviator/backend/.env
+      - sed -i 's@KAFKA_BROKERS@'"$KAFKA_BROKERS"'@' aviator/backend/.env
+      - sed -i 's@GAMEID_VAL@'"$GAME_ID"'@' aviator/backend/.env
+      - sed -i 's@GAMENAME_VAL@'"$GAMENAME"'@' aviator/backend/.env
+      - sed -i 's@TABLEID_VAL@'"$TABLE_ID"'@' aviator/backend/.env
+      - sed -i 's@TABLENAME_VAL@'"$TABLENAME"'@' aviator/backend/.env
+  
+  build:
+    commands:
+      - AWS_DEFAULT_REGION="eu-west-2"
+      - pwd
+      - ls
+      - echo "Login in to Amazon ECR..."
+      - aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin $AWSACCOUNT_ID.dkr.ecr.eu-west-2.amazonaws.com
+      - echo "Build started on `date`"
+      - echo "Building the Docker image..."
+      - docker build -t crashjet-dev -f aviator/backend/Dockerfile .
+      - docker tag crashjet-dev:latest $IMAGE_URL
+      - docker push $IMAGE_URL
+      - echo "$IMAGE_URL"
+      - aws ecs register-task-definition --family $TASK_DEFINITION_NAME --region $AWS_DEFAULT_REGION --cli-input-json file:///$CODEBUILD_SRC_DIR/aviator/backend/ecs/task-definition.json
+      - TASK_REVISION=$(aws ecs describe-task-definition --task-definition $TASK_DEFINITION_NAME --region eu-west-2 | jq '.taskDefinition.revision')
+      - echo $TASK_REVISION
+      # - aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --region $AWS_DEFAULT_REGION --task-definition "$TASK_DEFINITION_NAME:${TASK_REVISION}"

@@ -1,0 +1,254 @@
+{
+    "containerDefinitions": [
+      {
+        "name": "TASK_DEFINITION_NAME",
+        "image": "CONTAINER_IMAGE",
+        "cpu": 0,
+        "links": [],
+        "portMappings": [
+          {
+            "protocol": "tcp",
+            "containerPort": 5000,
+            "hostPort": 5000
+          }
+        ],
+        "essential": true,
+        "entryPoint": [],
+        "command": [],
+        "environment": [
+          {
+             "name": "BACCARAT_URL" ,
+             "value": "BACCARAT_URL_VAL"
+          },
+          {
+             "name": "CASINO_HOLDEM_URL" ,
+             "value": "CASINO_HOLDEM_URL_VAL"
+          },
+          {
+             "name":"DB_CLUSTER",
+             "value": "DB_CLUSTER_VAL"
+          },
+          {
+             "name": "DB_CLUSTER_NAME",
+             "value": "DB_CLUSTER_NAME_VAL"
+          },
+          {
+             "name":"DB_CONNECTION_URL",
+             "value": "DB_CONNECTION_URL_VAL"
+          },
+          {
+             "name":"DB_DATABASE",
+             "value": "DB_DATABASE_VAL"
+          },
+          {
+             "name":"MAINTENANCE_URL",
+             "value": "MAINTENANCE_URL_VAL"
+          },
+          {
+             "name":"GAMES_COPY_URL",
+             "value": "GAMES_COPY_URL_VAL"
+          },
+          {
+             "name":"GAME_DISABLED_URL",
+             "value": "GAME_DISABLED_URL_VAL"
+          },
+          {
+             "name":"ENV_URL",
+             "value": "ENV_URL_VAL"
+          },  
+          {
+             "name":"HYPEX_SALT",
+             "value": "HYPEX_SALT_VAL"
+          },
+          {
+             "name":"KAFKA_BROKERS",
+             "value": "KAFKA_BROKERS_VAL"
+          },
+          {
+             "name":"MUFLISTEENPATTI_URL",
+             "value": "MUFLISTEENPATTI_URL_VAL"
+          },
+          {
+             "name":"REDIS_ADDRESS",
+             "value": "REDIS_ADDRESS_VAL"
+          },
+          {
+             "name":"REDIS_DB",
+             "value": "REDIS_DB_VAL"
+          },
+          {
+             "name":"REDIS_HOST",
+             "value": "REDIS_HOST_VAL"
+          },
+          {
+             "name":"REDIS_MAX_RETRIES",
+             "value": "REDIS_MAX_RETRIES_VAL"
+          },
+          {
+             "name":"REDIS_PORT",
+             "value": "REDIS_PORT_VAL"
+          },
+          {
+             "name":"REDIS_READER",
+             "value": "REDIS_READER_VAL"
+          },
+          {
+             "name":"SETTLEMENT_URI",
+             "value": "SETTLEMENT_URI_VAL"
+          },  
+          {
+             "name":"TEENPATTI_URL",
+             "value": "TEENPATTI_URL_VAL"
+          },
+          {
+             "name":"TEST_BASE_URL",
+             "value": "TEST_BASE_URL_VAL"
+          },
+          {
+             "name":"TEST_GAME_LAUNCH_URL",
+             "value": "TEST_GAME_LAUNCH_URL_VAL"
+          },
+          {
+             "name":"TEST_LOBBY_URL",
+             "value": "TEST_LOBBY_URL_VAL"
+          },
+          {
+             "name":"TEST_OPERATOR",
+             "value": "TEST_OPERATOR_VAL"
+          },
+          {
+             "name":"TEST_OPERATOR_BASE_URL",
+             "value": "TEST_OPERATOR_BASE_URL_VAL"
+          },
+          {
+             "name":"TEST_OPERATOR_LOBBY_URL",
+             "value": "TEST_OPERATOR_LOBBY_URL_VAL"
+          },
+          {
+             "name":"TEST_TOKEN",
+             "value": "TEST_TOKEN_VAL"
+          },
+          {
+             "name":"VIDEO_URL",
+             "value": "VIDEO_URL_VAL"
+          },
+          {
+             "name":"WEBSOCKET_URL",
+             "value": "WEBSOCKET_URL_VAL"
+          },
+          {
+             "name":"GAME_ID",
+             "value": "GAME_ID_VAL"
+         },
+         {
+             "name":"TABLE_ID",
+             "value": "TABLE_ID_VAL"
+         },
+         {
+             "name":"RTP_BASE_URL",
+             "value": "RTP_BASE_URL_VAL"
+         },
+         {
+             "name":"TWOCARDTEENPATTI_URL",   
+             "value": "TWOCARDTEENPATTI_VAL"   
+         }
+         ],
+        "environmentFiles": [],
+        "mountPoints": [],
+        "volumesFrom": [],
+        "secrets": [],
+        "dnsServers": [],
+        "dnsSearchDomains": [],
+        "extraHosts": [],
+        "dockerSecurityOptions": [],
+        "dockerLabels": {},
+        "ulimits": [
+        ],
+        "logConfiguration": {
+          "logDriver": "awsfirelens",
+          "options": {
+            "Aws_auth": "Off",
+            "Aws_region": "Off",
+            "HTTP_Passwd": "OPENSEARCH_PASSWD",
+            "HTTP_User": "OPENSEARCH_USER",
+            "Host": "OPENSEARCH_HOST",
+            "Index": "OPENSEARCH_Prefix",
+            "Buffer_Size": "False",
+            "Name": "opensearch",
+            "Port": "9200",
+            "Type": "_doc",
+            "tls": "On",
+            "tls.verify": "Off",
+            "Logstash_Prefix": "OPENSEARCH_Prefix",
+            "Logstash_Format": "On",
+            "Suppress_Type_Name": "On"
+          },
+          "secretOptions": []
+        },
+        "systemControls": []
+      },
+      {
+        "name": "log_router",
+        "image": "public.ecr.aws/aws-observability/aws-for-fluent-bit:stable",
+        "cpu": 0,
+        "links": [],
+        "portMappings": [],
+        "essential": true,
+        "entryPoint": [],
+        "command": [],
+        "environment": [],
+        "environmentFiles": [],
+        "mountPoints": [],
+        "volumesFrom": [],
+        "secrets": [],
+        "user": "0",
+        "dnsServers": [],
+        "dnsSearchDomains": [],
+        "extraHosts": [],
+        "dockerSecurityOptions": [],
+        "dockerLabels": {},
+        "ulimits": [
+          {
+            "name": "nofile",
+            "softLimit": 90000,
+            "hardLimit": 180000
+          }
+        ],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-create-group": "true",
+            "awslogs-stream-prefix": "firelens",
+            "awslogs-region": "eu-west-2",
+            "awslogs-group": "/ecs/rg-slot-crashjetdev"
+          },
+          "secretOptions": []
+        },
+        "systemControls": [],
+        "firelensConfiguration": {
+          "type": "fluentbit",
+          "options": {"enable-ecs-log-metadata": "true"}
+        }
+      }
+    ],
+    "family": "TASK_DEFINITION_NAME",
+    "taskRoleArn": "arn:aws:iam::AWSACCOUNT_ID:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::AWSACCOUNT_ID:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "volumes": [],
+    "placementConstraints": [],
+    "requiresCompatibilities": [
+      "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "2048",
+    "runtimePlatform": {
+      "operatingSystemFamily": "LINUX"
+    },
+    "tags": [
+      {
+        "key": "ecs:taskDefinition:createdFrom",
+        "value": "ecs-console-v2"
+      }
+    ]
+  }
