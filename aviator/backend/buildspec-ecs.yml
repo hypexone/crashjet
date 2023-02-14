@@ -111,4 +111,4 @@ phases:
       - aws ecs register-task-definition --family $TASK_DEFINITION_NAME --region $AWS_DEFAULT_REGION --cli-input-json file:///$CODEBUILD_SRC_DIR/aviator/backend/ecs/task-definition.json
       - TASK_REVISION=$(aws ecs describe-task-definition --task-definition $TASK_DEFINITION_NAME --region eu-west-2 | jq '.taskDefinition.revision')
       - echo $TASK_REVISION
-      # - aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --region $AWS_DEFAULT_REGION --task-definition "$TASK_DEFINITION_NAME:${TASK_REVISION}"
+      - aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --region $AWS_DEFAULT_REGION --task-definition "$TASK_DEFINITION_NAME:${TASK_REVISION}"
