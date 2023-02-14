@@ -61,7 +61,7 @@ async function CreateNewRound() {
 
     io.emit('RoundID', roundid);
 
-    const event = { gameId: GameID, gameName: GameName, tableId: TableID, tableName: TableName, roundID: rId, roundStatus: roundStat, betStatus: betStat, outcome: crashresult};
+    const event = {"result":{ "gameId": GameID, "gameName": GameName, "tableId": TableID, "tableName": TableName, "roundID": rId, "roundStatus": roundStat, "betStatus": betStat, "result": crashresult}};
 
     // call the `produce` function and log an error if it occurs
     produce(event).catch((err) => {
@@ -153,8 +153,7 @@ function StartGame() {
     roundStat = "NO_MORE_BETS";
     betStat = "FALSE";
 
-    const event = { gameId: "CRASHJET101", gameName: "CrashJet", tableId: "CRASHJET101", tableName: "CRASHJET101", roundID: rId, roundStatus: roundStat, betStatus: betStat, outcome: crashresult};
-
+    const event = {"result":{ "gameId": GameID, "gameName": GameName, "tableId": TableID, "tableName": TableName, "roundID": rId, "roundStatus": roundStat, "betStatus": betStat, "result": crashresult}};
     // call the `produce` function and log an error if it occurs
     produce(event).catch((err) => {
         console.error("error in producer: ", err)
@@ -182,7 +181,7 @@ function StartGame() {
             roundStat = "ROUND_END";
             betStat = "FALSE";
         
-            const event = { gameId: "CRASHJET101", gameName: "CrashJet", tableId: "CRASHJET101", tableName: "CRASHJET101", roundID: rId, roundStatus: roundStat, betStatus: betStat, outcome: crashresult};
+            const event = {"result":{ "gameId": GameID, "gameName": GameName, "tableId": TableID, "tableName": TableName, "roundID": rId, "roundStatus": roundStat, "betStatus": betStat, "result": crashresult}};
         
             // call the `produce` function and log an error if it occurs
             produce(event).catch((err) => {
@@ -216,7 +215,7 @@ function WaitingForNextRound() {
     betStat = "TRUE";
     crashresult="";
 
-    const event = { gameId: "CRASHJET101", gameName: "CrashJet", tableId: "CRASHJET101", tableName: "CRASHJET101", roundID: rId, roundStatus: roundStat, betStatus: betStat, outcome: crashresult};
+    const event = {"result":{ "gameId": GameID, "gameName": GameName, "tableId": TableID, "tableName": TableName, "roundID": rId, "roundStatus": roundStat, "betStatus": betStat, "result": crashresult}};
 
     // call the `produce` function and log an error if it occurs
     produce(event).catch((err) => {
