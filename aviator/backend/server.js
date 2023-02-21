@@ -147,7 +147,7 @@ async function SaveResultInDB(pResult) {
 //  on game start
 function StartGame() {
 
-    let result = GetRandomInteger(100, 130);
+    let result = GetRandomInteger(100, 1000);
     crashresult = result.toString();
 
     roundStat = "NO_MORE_BETS";
